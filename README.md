@@ -2,9 +2,12 @@
 
 ### 项目介绍
 
-xxxxxxxxxxxxxxxxxxx
+匿名社交平台
 
 ### serve文件夹
 
 内容是服务器端的代码
 
+### client文件夹
+
+内容是服务器端代码
