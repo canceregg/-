@@ -18,6 +18,8 @@ public class Ad_Message extends BaseQuickAdapter<ObMessage, BaseViewHolder> {
     }
     @Override
     protected void convert(BaseViewHolder helper, ObMessage item) {
-        helper.setText(R.id.content,item.getContent());
+        helper.setText(R.id.m_title,item.getTitle());
+        helper.setText(R.id.m_content,item.getContent());
+        helper.addOnClickListener(R.id.m_title).addOnClickListener(R.id.delete).addOnClickListener(R.id.m_content);
     }
 }

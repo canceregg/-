@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.skyreach.yinliu.Main.Ad.Ad_Plate;
@@ -22,6 +23,7 @@ import java.util.List;
 public class platePage extends AppCompatActivity {
 
     private TextView boardName;
+    private ImageView writes;
 
     RecyclerView pla;
     Ad_Plate ad_plate;
@@ -35,6 +37,14 @@ public class platePage extends AppCompatActivity {
         View();
         boardName = plaHead.findViewById(R.id.plateName);
         boardName.setText(Main.clickBoard.getBoardName());
+        writes = findViewById(R.id.write);
+        writes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intents = new Intent(platePage.this,Ac_Write.class);
+                startActivity(intents);
+            }
+        });
     }
     private void View(){
         pla=(RecyclerView)findViewById(R.id.pla);

@@ -13,6 +13,7 @@
         <activity android:name=".Main.platePage"></activity>
         <activity android:name=".Main.userManagePage" />
         <activity android:name=".Main.articlePage" />
+        <activity android:name=".Main.Ac_Write" />
         <activity android:name=".Main.minePage" />
         <activity android:name=".Main.messagePage" />
         <activity android:name=".Main.interestPage" />
@@ -20,7 +21,7 @@
         <activity android:name=".Main.loginPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

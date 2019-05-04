@@ -32,7 +32,7 @@ public class TData {
         ObMessage obmessage;
         Main.root_my_postlist = PostIF.getInstance().getAllInfByUserId(Main.root_user.getUserId());
         for(int i = 0; i < Main.root_my_postlist.size(); i++){
-            obmessage = new ObMessage("标题："+Main.root_my_postlist.get(i).getPostTitle()+"     内容："+Main.root_my_postlist.get(i).getPostContent());
+            obmessage = new ObMessage("标题："+Main.root_my_postlist.get(i).getPostTitle(),"内容："+Main.root_my_postlist.get(i).getPostContent());
             messages.add(obmessage);
         }
         return messages;
