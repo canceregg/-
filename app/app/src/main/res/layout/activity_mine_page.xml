@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:layout_width="111dp"
+        android:layout_height="111dp"
+        android:layout_gravity="center"
+        android:src="@drawable/thehead_yes"/>
+    <LinearLayout
+        android:layout_marginTop="33dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="33dp"
+            android:text="昵称："
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/nickName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="啦啦啦"
+            android:textSize="33dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="33dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="22dp"
+            android:text="E-mail："
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/e_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="xxxxxxxx@xx.com"
+            android:textSize="22dp" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/inforBtn"
+        android:layout_width="match_parent"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="33dp"
+        android:background="@drawable/button_register"
+        android:text="账号管理"
+        android:textSize="18sp" />
+
+    <Button
+        android:layout_marginTop="33dp"
+        android:id="@+id/loginOut"
+        android:layout_width="match_parent"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_height="60dp"
+        android:background="@drawable/button_login"
+        android:text="退出登录"
+        android:textSize="18sp" />
+</LinearLayout>

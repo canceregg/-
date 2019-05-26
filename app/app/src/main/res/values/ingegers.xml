@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="fullBackgroundAlpha">255</integer>
+    <integer name="defaultBackgroundAlpha">230</integer>
+    <integer name="dialogplus_animation_default_duration">300</integer>
+
+    <item name="ex_header" type="id"/>
+    <integer name="qmui_anim_duration">300</integer>
+</resources>

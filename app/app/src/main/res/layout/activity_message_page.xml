@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Main.messagePage">
+    <TextView
+        android:text="消息通知"
+        android:layout_width="124dp"
+        android:layout_height="49dp"
+        android:id="@+id/messageHeader" android:textSize="30sp" app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.498"/>
+    <ScrollView
+        android:layout_width="395dp"
+        android:layout_height="581dp" android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/messageHeader" app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="8dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="395dp"
+            android:layout_height="581dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/messageHeader" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <TextView
+                android:text="消息1                   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                android:layout_width="match_parent"
+                android:layout_height="50sp" android:id="@+id/message1" android:textSize="18sp"/>
+            <TextView
+                android:text="消息2                   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                android:layout_width="match_parent"
+                android:layout_height="50sp" android:id="@+id/email" android:textSize="18sp"/>
+            <TextView
+                android:text="消息3                   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                android:layout_width="match_parent"
+                android:layout_height="50sp" android:id="@+id/phoneHeader" android:textSize="18sp"/>
+            <TextView
+                android:text="消息4                  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                android:layout_width="match_parent"
+                android:layout_height="50sp" android:id="@+id/phone" android:textSize="18sp"/>
+            <TextView
+                android:text="消息5                   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                android:layout_width="match_parent"
+                android:layout_height="50sp" android:id="@+id/message5" android:textSize="18sp"/>
+            <TextView
+                android:text="消息6                   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                android:layout_width="match_parent"
+                android:layout_height="50sp" android:id="@+id/message6" android:textSize="18sp"/>
+            <TextView
+                android:text="消息7                   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                android:layout_width="match_parent"
+                android:layout_height="50sp" android:id="@+id/message7" android:textSize="18sp"/>
+            <TextView
+                android:text="消息8                   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                android:layout_width="match_parent"
+                android:layout_height="50sp" android:id="@+id/message8" android:textSize="18sp"/>
+            <TextView
+                android:text="消息9                   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                android:layout_width="match_parent"
+                android:layout_height="50sp" android:id="@+id/message9" android:textSize="18sp"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

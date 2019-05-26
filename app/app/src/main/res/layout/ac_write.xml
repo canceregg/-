@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="33dp"
+            android:src="@drawable/back1"
+            android:id="@+id/back"
+            android:layout_centerVertical="true"
+            android:layout_height="33dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="22dp"
+            android:layout_alignParentRight="true"
+            android:id="@+id/post"
+            android:text="发表"
+            android:layout_margin="9dp"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="#8a8b8b8b"
+        android:layout_height="0.4dp"/>
+    <EditText
+        android:layout_margin="3dp"
+        android:layout_width="match_parent"
+        android:hint="标题"
+        android:id="@+id/e_title"
+        android:background="@drawable/edit_bg"
+        android:singleLine="true"
+        android:padding="9dp"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="内容......."
+        android:padding="9dp"
+        android:layout_margin="3dp"
+        android:cursorVisible="true"
+        android:textCursorDrawable="@color/me"
+        android:id="@+id/e_content"
+        android:gravity="left"
+        android:background="@drawable/write_edit_bg" />
+</LinearLayout>

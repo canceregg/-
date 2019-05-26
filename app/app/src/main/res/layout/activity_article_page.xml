@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="265dp" tools:srcCompat="@tools:sample/backgrounds/scenic[12]"
+                android:id="@+id/imageArticle"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="58dp" tools:srcCompat="@tools:sample/avatars[11]"
+                android:id="@+id/imageWriter"/>
+            <TextView
+                android:text="作者名"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/wirterName" android:textSize="18sp" android:gravity="center"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/writeDate" android:text="2019-4-20" android:gravity="center"/>
+            <TextView
+                android:text="标题"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/message5" android:textSize="24sp" android:textStyle="bold"
+                android:gravity="center"/>
+            <TextView
+                android:text="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" android:id="@+id/mainText"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:id="@+id/discuss">
+                <TextView
+                    android:text="评 论"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/discussHeader" android:textSize="20sp" android:textStyle="bold"
+                    android:gravity="center"/>
+                <TextView
+                    android:text="用户1                             XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userDiscuss1"/>
+                <TextView
+                    android:text="用户2                             XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userDiscuss2"/>
+                <TextView
+                    android:text="用户3                             XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userDiscuss3"/>
+                <TextView
+                    android:text="用户4                             XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userDiscuss4"/>
+                <TextView
+                    android:text="用户5                             XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userDiscuss5"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <ImageView
+        android:layout_margin="9dp"
+        android:src="@drawable/back1"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:id="@+id/back"/>
+</RelativeLayout>
