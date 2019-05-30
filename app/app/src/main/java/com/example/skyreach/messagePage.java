@@ -1,61 +1,116 @@
 package com.example.skyreach;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.example.skyreach.Ad.Ad_Message;
 import com.example.skyreach.Brvah.BaseQuickAdapter;
+import com.example.skyreach.Ob.EOne;
 import com.example.skyreach.Tool.TShow;
+import com.example.skyreach.connect.tool.Post;
 import com.example.skyreach.connect.work.PostIF;
+import com.example.skyreach.tkrefreshlayout.IHeaderView;
+import com.example.skyreach.tkrefreshlayout.RefreshListenerAdapter;
+import com.example.skyreach.tkrefreshlayout.TwinklingRefreshLayout;
+import com.example.skyreach.tkrefreshlayout.header.progresslayout.ProgressLayout;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class messagePage extends AppCompatActivity {
 
-    RecyclerView ins;
     Ad_Message ad_message;
+
+    List<Post> obPlates;
+    @BindView(R.id.fight)
+    TextView fight;
+    @BindView(R.id.write)
+    LinearLayout write;
+    @BindView(R.id.search)
+    LinearLayout search;
+    @BindView(R.id.top)
+    RelativeLayout top;
+    @BindView(R.id.megs)
+    RecyclerView megs;
+    @BindView(R.id.refresh)
+    TwinklingRefreshLayout refresh;
+    @BindView(R.id.zero)
     RelativeLayout zero;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_message);
+        ButterKnife.bind(this);
         View();
     }
-    private void ZERO(){
-        if(Main.root_my_postlist.size()==0){
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refresh.startRefresh();
+    }
+
+    private void ZERO() {
+        if (obPlates.size() == 0) {
             zero.setVisibility(View.VISIBLE);
-            ins.setVisibility(View.GONE);
-        }else{
+            megs.setVisibility(View.GONE);
+        } else {
             zero.setVisibility(View.GONE);
-            ins.setVisibility(View.VISIBLE);
+            megs.setVisibility(View.VISIBLE);
         }
     }
-    private void View(){
-        ins=(RecyclerView)findViewById(R.id.megs);
-        zero=findViewById(R.id.zero);
-        ad_message=new Ad_Message(this);
+
+    private void View() {
+        obPlates=new ArrayList<>();
+        ad_message = new Ad_Message(obPlates);
+
+        IHeaderView headerView=new ProgressLayout(this);
+        refresh.setHeaderView(headerView);
+
+        refresh.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onRefresh(TwinklingRefreshLayout refreshLayout) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        EventBus.getDefault().post(new EOne("ps",PostIF.getInstance().getAllInfByUserId(new ShareP(messagePage.this).getString("uid"))));
+                    }
+                }).start();
+            }
+        });
+
         ad_message.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
-                switch(view.getId()){
+                Post post=obPlates.get(position);
+                switch (view.getId()) {
                     case R.id.m_title:
-                        Main.clickPost = Main.root_my_postlist.get(position);
-                        Intent intent = new Intent(messagePage.this,articlePage.class);
+                        Intent intent = new Intent(messagePage.this, articlePage.class);
+                        intent.putExtra("post",post);
                         startActivity(intent);
                         break;
                     case R.id.m_content:
-                        Main.clickPost = Main.root_my_postlist.get(position);
-                        Intent intents = new Intent(messagePage.this,articlePage.class);
+                        Intent intents = new Intent(messagePage.this, articlePage.class);
+                        intents.putExtra("post",post);
                         startActivity(intents);
                         break;
                     case R.id.delete:
@@ -71,9 +126,9 @@ public class messagePage extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
-                                        Main.clickPost = Main.root_my_postlist.get(position);
-                                        PostIF.getInstance().delPost(Main.clickPost.getPostId(),Main.clickPost.getBoardId());
-                                        Main.root_my_postlist.remove(position);
+                                        PostIF.getInstance().delPost(post.getPostId(), post.getBoardId());
+
+
                                         ad_message.remove(position);
                                         ZERO();
                                         TShow.s("已清除");
@@ -85,8 +140,38 @@ public class messagePage extends AppCompatActivity {
                 }
             }
         });
-        ins.setLayoutManager(new LinearLayoutManager(this));
-        ins.setAdapter(ad_message);
+        megs.setLayoutManager(new LinearLayoutManager(this));
+        megs.setAdapter(ad_message);
         ZERO();
+
+        refresh.startRefresh();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eOne(EOne eone) {
+        refresh.finishRefreshing();
+        if (eone.getFight().equals("ps")) {
+            TShow.s("s2");
+            if (eone.getObject() instanceof List) {
+                TShow.s("s1");
+                obPlates.clear();
+                obPlates.addAll((List<Post>) eone.getObject());
+
+                ad_message.notifyDataSetChanged();
+                ZERO();
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 }

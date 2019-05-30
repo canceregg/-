@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="3dp"
     android:layout_height="wrap_content">
     <ImageView
-        android:layout_width="66dp"
-        android:layout_height="66dp"
-        android:layout_gravity="center"
-        android:src="@drawable/xingqu"/>
-    <TextView
-        android:id="@+id/interestHeader"
-        android:textStyle="bold|italic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="兴趣园地"
-        android:textSize="23sp" />
+        android:adjustViewBounds="true"
+        android:src="@drawable/hey"/>
 </LinearLayout>

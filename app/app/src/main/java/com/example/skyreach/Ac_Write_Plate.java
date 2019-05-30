@@ -24,6 +24,7 @@ public class Ac_Write_Plate extends Activity {
 
     private ShareP shareP;
 
+    private String bid;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +34,8 @@ public class Ac_Write_Plate extends Activity {
         post = findViewById(R.id.post);
         title = findViewById(R.id.e_title);
         content = findViewById(R.id.e_content);
+
+        bid=getIntent().getStringExtra("bid");
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +54,7 @@ public class Ac_Write_Plate extends Activity {
                 }
                 else{
                     if(shareP.getBoolean("login")){
-                        final Post n_post = new Post(shareP.getString("uid"),Main.clickBoard.getBoardId(),e_title,e_content,0,0);
+                        final Post n_post = new Post(shareP.getString("uid"),bid,e_title,e_content,0,0);
                         new Thread(new Runnable() {
                             @Override
                             public void run() {

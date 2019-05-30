@@ -1,74 +1,89 @@
 package com.example.skyreach;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-
 import com.example.skyreach.Ad.Ad_Plate;
 import com.example.skyreach.Brvah.BaseQuickAdapter;
-import com.example.skyreach.Ob.ObPlate;
+import com.example.skyreach.Ob.EOne;
 import com.example.skyreach.Tool.TShow;
+import com.example.skyreach.connect.tool.Post;
 import com.example.skyreach.connect.work.PostIF;
+import com.example.skyreach.tkrefreshlayout.IHeaderView;
+import com.example.skyreach.tkrefreshlayout.RefreshListenerAdapter;
+import com.example.skyreach.tkrefreshlayout.TwinklingRefreshLayout;
+import com.example.skyreach.tkrefreshlayout.header.progresslayout.ProgressLayout;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class platePage extends AppCompatActivity {
 
-    private TextView boardName;
-    private ImageView writes;
 
-    RecyclerView pla;
     Ad_Plate ad_plate;
-    List<ObPlate> obPlates;
+    List<Post> obPlates;
+    @BindView(R.id.plateName)
+    TextView plateName;
+    @BindView(R.id.write)
+    LinearLayout write;
+    @BindView(R.id.search)
+    LinearLayout search;
+    @BindView(R.id.pla)
+    RecyclerView pla;
+    @BindView(R.id.refresh)
+    TwinklingRefreshLayout refresh;
 
-    View plaHead;
+    private String bid, bname;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_plate);
+        ButterKnife.bind(this);
+        bid = getIntent().getStringExtra("bid");
+        bname = getIntent().getStringExtra("bname");
+        plateName.setText(bname);
         View();
-        boardName = plaHead.findViewById(R.id.plateName);
-        boardName.setText(Main.clickBoard.getBoardName());
-        writes = findViewById(R.id.write);
-        writes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intents = new Intent(platePage.this, Ac_Write_Plate.class);
-                startActivityForResult(intents,1);
-            }
-        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1&&data!=null){
-            ObPlate post=(ObPlate) data.getSerializableExtra("plate");
-            ad_plate.add(0,post);
+        if (requestCode == 1 && data != null) {
+            refresh.startRefresh();
         }
     }
 
-    private void View(){
-        pla=(RecyclerView)findViewById(R.id.pla);
-        plaHead=(View) LayoutInflater.from(this).inflate(R.layout.pla_head,null,true);
-        obPlates=TData.getPlate();
-        ad_plate=new Ad_Plate(obPlates);
+    private void View() {
+        IHeaderView headerView = new ProgressLayout(this);
+        refresh.setHeaderView(headerView);
+
+        obPlates = new ArrayList<>();
+        ad_plate = new Ad_Plate(obPlates);
         ad_plate.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, final View view, final int position) {
-                if(view.getId()==R.id.del){
+                if (view.getId() == R.id.del) {
                     new AlertDialog.Builder(platePage.this)
                             .setMessage("确定清除这个帖子嘛?")
                             .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -81,25 +96,79 @@ public class platePage extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    Main.root_board_postlist.remove(position);
-                                    ad_plate.remove(position);
+
                                     TShow.s("帖子已删除");
-                                    Main.clickPost = Main.root_board_postlist.get(position);
-                                    PostIF.getInstance().delPost(Main.clickPost.getPostId(),Main.clickPost.getBoardId());
+                                    Post post = obPlates.get(position);
+                                    PostIF.getInstance().delPost(post.getPostId(), bid);
+
+                                    ad_plate.remove(position);
                                 }
                             })
                             .create().show();
-                }else{
-                    Main.clickPost = Main.root_board_postlist.get(position);
-                    PostIF.getInstance().increaseClickCnt(Main.clickPost.getPostId());
-                    Intent intent = new Intent(platePage.this,articlePage.class);
+                } else {
+                    Post post = obPlates.get(position);
+                    PostIF.getInstance().increaseClickCnt(post.getPostId());
+                    Intent intent = new Intent(platePage.this, articlePage.class);
+                    intent.putExtra("post", post);
                     startActivity(intent);
                 }
             }
         });
-
-        ad_plate.setHeaderView(plaHead);
+        refresh.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onRefresh(TwinklingRefreshLayout refreshLayout) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        EventBus.getDefault().post(new EOne("ps", PostIF.getInstance().getAllInfByBoardId(bid)));
+                    }
+                }).start();
+            }
+        });
         pla.setLayoutManager(new LinearLayoutManager(this));
         pla.setAdapter(ad_plate);
+
+        refresh.startRefresh();
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eOne(EOne eone) {
+        refresh.finishRefreshing();
+        if (eone.getFight().equals("ps")) {
+            TShow.s("s2");
+            if (eone.getObject() instanceof List) {
+                TShow.s("s1");
+                obPlates.clear();
+                obPlates.addAll((List<Post>) eone.getObject());
+
+                ad_plate.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @OnClick({R.id.write, R.id.search})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.write:
+                Intent intents = new Intent(platePage.this, Ac_Write_Plate.class);
+                intents.putExtra("bid", bid);
+                startActivityForResult(intents, 1);
+                break;
+            case R.id.search:
+                break;
+        }
     }
 }

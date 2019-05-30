@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.example.skyreach.Ad.Ad_Interest;
 import com.example.skyreach.Brvah.BaseQuickAdapter;
+import com.example.skyreach.Ob.EOne;
+import com.example.skyreach.Ob.ObComment;
 import com.example.skyreach.Ob.ObInterest;
 import com.example.skyreach.Tool.TShow;
 import com.example.skyreach.connect.tool.Board;
@@ -28,6 +30,11 @@ import com.example.skyreach.tkrefreshlayout.RefreshListenerAdapter;
 import com.example.skyreach.tkrefreshlayout.TwinklingRefreshLayout;
 import com.example.skyreach.tkrefreshlayout.header.progresslayout.ProgressLayout;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,7 +45,7 @@ public class interestPage extends AppCompatActivity {
 
     RecyclerView ins;
     Ad_Interest ad_interest;
-    List<ObInterest> obInterests;
+    List<Board> obInterests;
 
     View insHead;
 
@@ -65,8 +72,8 @@ public class interestPage extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==2&&data!=null){
-            ObInterest obInterest=(ObInterest)data.getSerializableExtra("interest");
-            ad_interest.add(0,obInterest);
+            //ObInterest obInterest=(ObInterest)data.getSerializableExtra("interest");
+            //ad_interest.add(0,obInterest);
         }
     }
 
@@ -86,15 +93,15 @@ public class interestPage extends AppCompatActivity {
         refresh.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
-                new Handler().postDelayed(new Runnable() {
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        refreshLayout.finishRefreshing();
+                        EventBus.getDefault().post(new EOne("bs",BoardIF.getInstance().getAllInf()));
                     }
-                },1000);
+                }).start();
             }
         });
-        obInterests=TData.getInterest();
+        obInterests=new ArrayList<>();
 
         ad_interest=new Ad_Interest(obInterests);
         ad_interest.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -113,19 +120,23 @@ public class interestPage extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    ad_interest.remove(position);
-                                    Board board=Main.root_boardlist.get(position);
-                                    Main.root_boardlist.remove(position);
+
+                                    Board board=obInterests.get(position);
+                                    TShow.s(position);
                                     BoardIF.getInstance().delBoard(board.getBoardId());
                                     TShow.s("板块已清除");
+
+                                    ad_interest.remove(position);
                                 }
                             })
                             .create().show();
                 }else{
-                    Main.root_board_postlist = PostIF.getInstance().getAllInfByBoardId(Main.root_boardlist.get(position).getBoardId());
-                    Main.clickBoard = Main.root_boardlist.get(position);
-                    BoardIF.getInstance().increaseClickCnt(Main.clickBoard.getBoardId());
+                    Board board=obInterests.get(position);
+
+                    BoardIF.getInstance().increaseClickCnt(board.getBoardId());
                     Intent intent = new Intent(interestPage.this,platePage.class);
+                    intent.putExtra("bid",board.getBoardId());
+                    intent.putExtra("bname",board.getBoardName());
                     startActivity(intent);
                 }
 
@@ -135,5 +146,32 @@ public class interestPage extends AppCompatActivity {
         ad_interest.setHeaderView(insHead);
         ins.setLayoutManager(new LinearLayoutManager(this));
         ins.setAdapter(ad_interest);
+
+        refresh.startRefresh();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void eOne(EOne eone) {
+        refresh.finishRefreshing();
+        if(eone.getFight().equals("bs")){
+            TShow.s("s2");
+            if(eone.getObject()instanceof List){
+                TShow.s("s1");
+                obInterests.clear();
+                obInterests.addAll((List<Board>)eone.getObject());
+
+                ad_interest.notifyDataSetChanged();
+            }
+        }
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 }

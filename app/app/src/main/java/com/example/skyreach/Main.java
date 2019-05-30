@@ -3,6 +3,7 @@ package com.example.skyreach;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,6 +11,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.skyreach.Tool.TBar;
+import com.example.skyreach.Tool.UtilPer;
 import com.example.skyreach.connect.tool.Board;
 import com.example.skyreach.connect.tool.Comment;
 import com.example.skyreach.connect.tool.Post;
@@ -24,12 +26,6 @@ public class Main extends TabActivity implements View.OnClickListener{
     private static final String One = "one";
     private static final String Two = "two";
     private static final String Three = "three";
-
-    public static List<Board> root_boardlist;//所有的板块
-    public static List<Post> root_my_postlist;//当前登录用户的所有帖子
-    public static List<Post> root_board_postlist;//当前点击的板块的所有帖子
-    public static Board clickBoard;//当前点击的板块
-    public static Post clickPost;//当前点击的帖子
     public static List<Comment> clickComment;//当前点击帖子的评论
 
     //定义Intent对象
@@ -60,6 +56,7 @@ public class Main extends TabActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_main);
         TBar.compat(this);
+        UtilPer.Per(Main.this,new Handler());
         shareP=new ShareP(this);
         View();
         Data();
