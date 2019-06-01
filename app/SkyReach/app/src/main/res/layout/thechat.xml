@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22dp"
+            android:textColor="@color/me"
+            android:text="聊天"
+            android:layout_margin="3dp"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+    <com.example.skyreach.tkrefreshlayout.TwinklingRefreshLayout
+        android:layout_width="match_parent"
+        app:tr_pureScrollMode_on="true"
+        android:id="@+id/refresh"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rec"/>
+    </com.example.skyreach.tkrefreshlayout.TwinklingRefreshLayout>
+
+</LinearLayout>
